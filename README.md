@@ -12,6 +12,7 @@ LEMP is a solution stack of php web-server composed with components here:
 * PHP (php5&php5-fpm&php-apc)
 * MariaDB 10.0.x
  ...
+
 ###Why is LEMP?
 LEMP is a efficient & light & morden web-server-build choice. So it made sure that it's high-performance and easy-to-use even build.
 * Why is Linux and Debian7?
