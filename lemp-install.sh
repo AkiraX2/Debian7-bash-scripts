@@ -77,7 +77,7 @@ f_nginx_config(){
 # nginx
 f_nginx(){
         while :; do
-                echo "*>>> Nginx:"
+                echo ">>> Nginx:"
                 if [[ `service nginx status|wc -l` -eq 0 ]]; then
                         f_continue ">>> Are you sure you want to install Nginx now?"
                         if [[ $? -eq 0 ]]; then
@@ -126,7 +126,7 @@ f_php_install(){
 }
 # php config
 f_php_config(){
-        echo -e ">>> Edit apc.ini by adding this: \n"$APC_CONFIG">>> Press any key..."; read -n 1
+        echo -e ">>> Edit apc.ini by adding this: \n"$APC_CONFIG_SAMPLE">>> Press any key..."; read -n 1
         vi /etc/php5/fpm/conf.d/20-apc.ini
         f_continue ">>> Restart php5-fpm right now?"
         if [[ $? -eq 0 ]]; then
