@@ -47,9 +47,9 @@ f_nginx_config(){
         echo "To config Nginx. Press any key..."; read a
         cd /etc/nginx/sites-available && pwd && ls
         while :; do
-                echo "Please enter your host name(like google.com):"
+                echo -n "Please enter your host name(like google.com):"
                 read vhost
-                f_continue "Affirm."
+                f_continue $vhost" Affirm please."
                 if [[ $? -eq 1 ]]; then
                         if [[ -f $vhost ]]; then
                                 echo "Already exsits. Rewrite?"
@@ -57,15 +57,16 @@ f_nginx_config(){
                                         break
                                 fi
                         fi
-                        cp defaulte $vhost && pwd && ls
+                        cp default $vhost && pwd && ls
                         break
                 fi
         done
         echo "To edit $vhost. Press any key..."; read a
         vi $vhost
-        f_continue "To copy $vhost to enabled directory. Press any key..."; read a
+        echo "To copy $vhost to enabled directory. Press any key..."; read a
         cd ../sites-enabled/
-        ln -s ../sites-enabled/$vhost &&  pwd && ll
+        ln -s ../sites-available/$vhost 
+        pwd && ll
 }
 # nginx
 f_nginx(){
