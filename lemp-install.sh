@@ -6,16 +6,8 @@ This is a script for debain 7 to install Nginx + php(php5+ fpm + apc) + MariaDB.
                                                                 Author: Michael\n
                                                         E-mail: maketa521@gmail.com\n
 ***********************************************************************************\n"
-OPTIONS="
-Nginx 
-Php 
-MariaDB 
-Exit"
-COMMANDS=" 
-Config 
-ReStart 
-Status 
-Return"
+OPTIONS="Nginx Php MariaDB Exit"
+COMMANDS="Config ReStart Status Return"
 APC_CONFIG_SAMPLE="
 **************************\n
 extension=apc.so\n
@@ -54,7 +46,7 @@ f_nginx_install(){
         service nginx start && service nginx status
         
         f_continue "Nginx has been installed. Restart right now?"
-        if [[ $?="0" ]]; then
+        if [[ $? -eq 0 ]]; then
                 return 0
         fi
         service nginx restart
@@ -67,10 +59,10 @@ f_nginx_config(){
                 echo "Please enter your host name(like google.com):"
                 read vhost
                 f_continue "Affirm."
-                if [[ $?="1" ]]; then
+                if [[ $? -eq 1 ]]; then
                         if [[ -f $vhost ]]; then
                                 echo "Already exsits. Rewrite?"
-                                if [[ $?="0" ]]; then
+                                if [[ $? -eq 0 ]]; then
                                         break
                                 fi
                         fi
@@ -88,9 +80,9 @@ f_nginx_config(){
 f_nginx(){
         while :; do
                 echo "Nginx:"
-                if [[ EXSITSNGINX="0" ]]; then
+                if [[ EXSITSNGINX -eq 0 ]]; then
                         f_continue "Are you sure you want to install Nginx now?"
-                        if [[ $?="0" ]]; then
+                        if [[ $? -eq 0 ]]; then
                                 break
                         fi
                         f_nginx_install
@@ -99,7 +91,7 @@ f_nginx(){
                         if [[ "$opt"="ReStart" ]]; then
                                 service nginx status
                                 f_continue "Are you sure you want to restart Nginx now?"
-                                if [[ $?="0" ]]; then
+                                if [[ $? -eq 0 ]]; then
                                       break
                                 fi
                                 #restart
@@ -248,7 +240,7 @@ clear
 echo -e $DECLARE
 
 f_continue "The install script is ready. Seriously start now?"
-if [[ "$?"="0" ]]; then
+if [[ $? -eq 0 ]]; then
         exit 0
 fi
 while :; do        
