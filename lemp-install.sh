@@ -87,7 +87,7 @@ f_nginx(){
                         fi
                         f_nginx_install
                 fi
-                select opt in COMMANDS; do
+                select opt in $COMMANDS; do
                         if [[ "$opt"="ReStart" ]]; then
                                 service nginx status
                                 f_continue "Are you sure you want to restart Nginx now?"
@@ -149,7 +149,7 @@ f_php(){
                         echo "PHP has been installed."
 
                 fi
-                select opt in COMMANDS; do
+                select opt in $COMMANDS; do
                         if [[ "$opt"="ReStart" ]]; then
                                 service php5-fpm status
                                 f_continue "Are you sure you want to restart php5-fpm now?"
@@ -198,7 +198,7 @@ f_mariaDB(){
                         echo "MariaDB has been installed."
 
                 fi
-                select opt in COMMANDS; do
+                select opt in $COMMANDS; do
                         if [[ "$opt"="ReStart" ]]; then
                                 service mysql status
                                 f_continue "Are you sure you want to restart MariaDB now?"
@@ -244,7 +244,7 @@ if [[ $? -eq 0 ]]; then
         exit 0
 fi
 while :; do        
-        select opt in OPTIONS; do
+        select opt in $OPTIONS; do
                 if [[ "$opt"="Nginx" ]]; then
                         f_nginx
                         break 
