@@ -20,9 +20,6 @@ apc.gc_ttl=3600\n
 apc.max_file_size=1M\n
 **************************\n"
 
-EXSITSNGINX=`service nginx status|wc -l`
-EXSITSMARIADB=`service mysql status|wc -l`
-EXSITSPHP=`service php5-fpm status|wc -l`
 
 # yes or no
 f_continue() {
@@ -42,14 +39,8 @@ f_continue() {
 # nginx install
 f_nginx_install(){
         apt-get install nginx
-     		
         service nginx start && service nginx status
-        
-        f_continue "Nginx has been installed. Restart right now?"
-        if [[ $? -eq 0 ]]; then
-                return 0
-        fi
-        service nginx restart
+        echo "Nginx is installed".
 }
 # nginx config
 f_nginx_config(){
@@ -80,7 +71,7 @@ f_nginx_config(){
 f_nginx(){
         while :; do
                 echo "Nginx:"
-                if [[ EXSITSNGINX -eq 0 ]]; then
+                if [[ `service nginx status|wc -l` -eq 0 ]]; then
                         f_continue "Are you sure you want to install Nginx now?"
                         if [[ $? -eq 0 ]]; then
                                 break
@@ -104,7 +95,7 @@ f_nginx(){
                                         break
                                 fi
                                 f_nginx_config
-                                f_continue "Are you sure you want to restart Nginx now?"
+                                f_continue "Do you want to restart Nginx now?"
                                 if [[ $?="0" ]]; then
                                       break
                                 fi
@@ -140,7 +131,7 @@ f_php_config(){
 f_php(){
         while :; do
                 echo "PHP:"
-                if [[ EXSITSPHP="0" ]]; then
+                if [[ `service php5-fpm status|wc -l`="0" ]]; then
                         f_continue "Are you sure you want to install PHP component now?"
                         if [[ $?="0" ]]; then
                                 break
@@ -189,7 +180,7 @@ f_mariaDB_install(){
 f_mariaDB(){
         while :; do
                 echo "MariaDB:"
-                if [[ EXSITSMARIADB="0" ]]; then
+                if [[ `service mysql status|wc -l`="0" ]]; then
                         f_continue "Are you sure you want to install MariaDB now?"
                         if [[ $?="0" ]]; then
                                 break
@@ -217,7 +208,7 @@ f_mariaDB(){
                                 cd /etc/mysql/ && ls
                                 #config
                                 vi my.cnf
-                                f_continue "Are you sure you want to restart MariaDB now?"
+                                f_continue "Do you want to restart MariaDB now?"
                                 if [[ $?="0" ]]; then
                                       break
                                 fi
