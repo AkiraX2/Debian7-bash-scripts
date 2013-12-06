@@ -91,12 +91,12 @@ f_nginx(){
                                 break
                         elif [[ "$opt"x =  "Config"x ]]; then
                                 f_continue "Are you sure you want to config Nginx now?"
-                                if [[ $?="0" ]]; then
+                                if [[ $? -eq 0 ]]; then
                                         break
                                 fi
                                 f_nginx_config
                                 f_continue "Do you want to restart Nginx now?"
-                                if [[ $?="0" ]]; then
+                                if [[ $? -eq 0 ]]; then
                                       break
                                 fi
                                 #restart
