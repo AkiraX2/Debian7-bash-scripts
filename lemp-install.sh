@@ -52,7 +52,7 @@ f_nginx_config(){
                 f_continue $vhost" Affirm please."
                 if [[ $? -eq 1 ]]; then
                         if [[ -f $vhost ]]; then
-                                echo "Already exsits. Rewrite?"
+                                f_continue "Already exsits. Rewrite?"
                                 if [[ $? -eq 0 ]]; then
                                         break
                                 fi
@@ -66,7 +66,7 @@ f_nginx_config(){
         echo "To copy $vhost to enabled directory. Press any key..."; read a
         cd ../sites-enabled/
         ln -s ../sites-available/$vhost 
-        pwd && ll
+        pwd && ls
 }
 # nginx
 f_nginx(){
