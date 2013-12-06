@@ -44,7 +44,7 @@ f_nginx_install(){
 }
 # nginx config
 f_nginx_config(){
-        echo "To config Nginx. Press any key..."; read a
+        echo "To config Nginx. Press any key..."; read -n 1
         cd /etc/nginx/sites-available && pwd && ls
         while :; do
                 echo -n "Please enter your host name(like google.com):"
@@ -61,10 +61,16 @@ f_nginx_config(){
                         break
                 fi
         done
-        echo "To edit $vhost. Press any key..."; read a
+        echo "To edit $vhost. Press any key..."; read -n 1
         vi $vhost
-        echo "To copy $vhost to enabled directory. Press any key..."; read a
-        cd ../sites-enabled/
+        echo "To copy $vhost to enabled directory. Press any key..."; read -n 1
+        cd ../sites-enabled/ && pwd && ls
+        if [[ -f $vhost ]]; then
+            f_continue "Already exsits. Rewrite?"
+            if [[ $? -eq 0 ]]; then
+                return 0
+            fi
+        fi
         ln -s ../sites-available/$vhost 
         pwd && ls
 }
@@ -120,7 +126,7 @@ f_php_install(){
 }
 # php config
 f_php_config(){
-        echo "Edit apc.ini by adding this: \n"$APC_CONFIG"Press any key..."; read a
+        echo "Edit apc.ini by adding this: \n"$APC_CONFIG"Press any key..."; read -n 1
         vi /etc/php5/fpm/conf.d/20-apc.ini
         f_continue "Restart php5-fpm right now?"
         if [[ $?="0" ]]; then
