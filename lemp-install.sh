@@ -248,7 +248,7 @@ clear
 echo -e $DECLARE
 
 f_continue "The install script is ready. Seriously start now?"
-if [[ $?=0 ]]; then
+if [[ $?="0" ]]; then
         exit 0
 fi
 while :; do        
