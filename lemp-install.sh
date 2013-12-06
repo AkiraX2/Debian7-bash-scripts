@@ -24,7 +24,7 @@ apc.max_file_size=1M\n
 # yes or no
 f_continue() {
         while :; do
-                echo -en $1"(Yes | No): "
+                echo -en $1" [Yes | No]: "
                 read res
                 case $res in
                         Yes|yes|Y|y)
@@ -32,7 +32,7 @@ f_continue() {
                         No|no|N|n)
                         return 0;;
                         *)
-                        echo "Please input Yes or No, retry: ";;
+                        echo "*** Worng. Please retry.";;
                 esac
         done
 }
@@ -40,19 +40,19 @@ f_continue() {
 f_nginx_install(){
         apt-get install nginx
         service nginx start && service nginx status
-        echo "Nginx is installed".
+        echo "*** Nginx is installed".
 }
 # nginx config
 f_nginx_config(){
-        echo -n "To config Nginx. Press any key..."; read -n 1
+        echo -n "*** To config Nginx. Press any key..."; read -n 1
         cd /etc/nginx/sites-available && pwd && ls
         while :; do
-                echo -n "Please enter your host name(like google.com):"
+                echo -n "*** Please enter your host name(like google.com):"
                 read vhost
-                f_continue $vhost" Affirm please."
+                f_continue "*** "$vhost" Affirm please."
                 if [[ $? -eq 1 ]]; then
                         if [[ -f $vhost ]]; then
-                                f_continue "Already exsits. Rewrite?"
+                                f_continue "*** Already exsits. Rewrite?"
                                 if [[ $? -eq 0 ]]; then
                                         break
                                 fi
@@ -61,12 +61,12 @@ f_nginx_config(){
                         break
                 fi
         done
-        echo -n "To edit $vhost. Press any key..."; read -n 1
+        echo -n "*** To edit $vhost. Press any key..."; read -n 1
         vi $vhost
-        echo -n "To copy $vhost to enabled directory. Press any key..."; read -n 1
+        echo -n "*** To copy $vhost to enabled directory. Press any key..."; read -n 1
         cd ../sites-enabled/ && pwd && ls
         if [[ -f $vhost ]]; then
-            f_continue "Already exsits. Rewrite?"
+            f_continue "*** Already exsits. Rewrite?"
             if [[ $? -eq 0 ]]; then
                 return 0
             fi
@@ -77,9 +77,9 @@ f_nginx_config(){
 # nginx
 f_nginx(){
         while :; do
-                echo "Nginx:"
+                echo "**** Nginx:"
                 if [[ `service nginx status|wc -l` -eq 0 ]]; then
-                        f_continue "Are you sure you want to install Nginx now?"
+                        f_continue "*** Are you sure you want to install Nginx now?"
                         if [[ $? -eq 0 ]]; then
                                 break
                         fi
@@ -88,34 +88,34 @@ f_nginx(){
                 select opt in $COMMANDS; do
                         if [[ "$opt"x =  "ReStart"x ]]; then
                                 service nginx status
-                                f_continue "Are you sure you want to restart Nginx now?"
+                                f_continue "*** Are you sure you want to restart Nginx now?"
                                 if [[ $? -eq 0 ]]; then
                                       break
                                 fi
                                 #restart
                                 service nginx restart
-                                echo "Nginx has been restarted."
+                                echo "*** Nginx has been restarted."
                                 break
                         elif [[ "$opt"x =  "Config"x ]]; then
-                                f_continue "Are you sure you want to config Nginx now?"
+                                f_continue "*** Are you sure you want to config Nginx now?"
                                 if [[ $? -eq 0 ]]; then
                                         break
                                 fi
                                 f_nginx_config
-                                f_continue "Do you want to restart Nginx now?"
+                                f_continue "*** Do you want to restart Nginx now?"
                                 if [[ $? -eq 0 ]]; then
                                       break
                                 fi
                                 #restart
                                 service nginx restart
-                                echo "Nginx has been restarted."
+                                echo "*** Nginx has been restarted."
                                 break
                         elif [[ "$opt"x =  "Status"x ]]; then
                                 service nginx status
                         elif [[ "$opt"x =  "Return"x ]]; then
                                 return 0
                         else
-                                echo "Please input number. Retry:"
+                                echo "*** Please input number. Retry:"
                         fi
                 done
         done
@@ -126,9 +126,9 @@ f_php_install(){
 }
 # php config
 f_php_config(){
-        echo -n "Edit apc.ini by adding this: \n"$APC_CONFIG"Press any key..."; read -n 1
+        echo -e "*** Edit apc.ini by adding this: \n"$APC_CONFIG"*** Press any key..."; read -n 1
         vi /etc/php5/fpm/conf.d/20-apc.ini
-        f_continue "Restart php5-fpm right now?"
+        f_continue "*** Restart php5-fpm right now?"
         if [[ $? -eq 0 ]]; then
                 return
         fi
@@ -137,29 +137,29 @@ f_php_config(){
 # php5 + php5-fpm + apc
 f_php(){
         while :; do
-                echo "PHP:"
+                echo "*** PHP:"
                 if [[ `service php5-fpm status|wc -l` -eq 0 ]]; then
-                        f_continue "Are you sure you want to install PHP component now?"
+                        f_continue "*** Are you sure you want to install PHP component now?"
                         if [[ $? -eq 0 ]]; then
                                 break
                         fi
                         f_php_install
-                        echo "PHP has been installed."
+                        echo "*** PHP has been installed."
 
                 fi
                 select opt in $COMMANDS; do
                         if [[ "$opt"x =  "ReStart"x ]]; then
                                 service php5-fpm status
-                                f_continue "Are you sure you want to restart php5-fpm now?"
+                                f_continue "*** Are you sure you want to restart php5-fpm now?"
                                 if [[ $? -eq 0 ]]; then
                                       break
                                 fi
                                 #restart
                                 service php5-fpm restart
-                                echo "PHP has been restarted."
+                                echo "*** PHP has been restarted."
                                 break
                         elif [[ "$opt"x =  "Config"x ]]; then
-                                f_continue "Are you sure you want to config PHP now?"
+                                f_continue "*** Are you sure you want to config PHP now?"
                                 if [[ $? -eq 0 ]]; then
                                         break
                                 fi
@@ -170,7 +170,7 @@ f_php(){
                         elif [[ "$opt"x =  "Return"x ]]; then
                                 return 0
                         else
-                             echo "Please input number. Retry:"
+                             echo "*** Please input number. Retry:"
                         fi
                 done
         done
@@ -186,48 +186,48 @@ f_mariaDB_install(){
 # mariaDB
 f_mariaDB(){
         while :; do
-                echo "MariaDB:"
+                echo "*** MariaDB:"
                 if [[ `service mysql status|wc -l` -eq 0 ]]; then
-                        f_continue "Are you sure you want to install MariaDB now?"
+                        f_continue "*** Are you sure you want to install MariaDB now?"
                         if [[ $? -eq 0 ]]; then
                                 break
                         fi
                         f_mariaDB_install
-                        echo "MariaDB has been installed."
+                        echo "*** MariaDB has been installed."
 
                 fi
                 select opt in $COMMANDS; do
                         if [[ "$opt"x =  "ReStart"x ]]; then
                                 service mysql status
-                                f_continue "Are you sure you want to restart MariaDB now?"
+                                f_continue "*** Are you sure you want to restart MariaDB now?"
                                 if [[ $? -eq 0 ]]; then
                                       break
                                 fi
                                 #restart
                                 service mysql restart
-                                echo "MariaDB has been restarted."
+                                echo "**** MariaDB has been restarted."
                                 break
                         elif [[ "$opt"x =  "Config"x ]]; then
-                                f_continue "Are you sure you want to config MariaDB now?"
+                                f_continue "*** Are you sure you want to config MariaDB now?"
                                 if [[ $? -eq 0 ]]; then
                                         break
                                 fi
                                 cd /etc/mysql/ && ls
                                 #config
                                 vi my.cnf
-                                f_continue "Do you want to restart MariaDB now?"
+                                f_continue "*** Do you want to restart MariaDB now?"
                                 if [[ $? -eq 0 ]]; then
                                       break
                                 fi
                                 service mysql restart
-                                echo "MariaDB has been restarted."
+                                echo "*** MariaDB has been restarted."
                                 break
                         elif [[ "$opt"x =  "Status"x ]]; then
                                 service mysql status
                         elif [[ "$opt"x =  "Return"x ]]; then
                                 return 0
                         else
-                                echo "Please input number. Retry:"
+                                echo "*** Please input number. Retry:"
                         fi
                 done
         done
@@ -237,7 +237,7 @@ f_mariaDB(){
 clear
 echo -e $DECLARE
 
-f_continue "The install script is ready. Seriously start now?"
+f_continue "*** The install script is ready. Seriously start now?"
 if [[ $? -eq 0 ]]; then
         exit 0
 fi
@@ -253,7 +253,7 @@ while :; do
                         f_mariaDB
                         break
                 elif [[ "$opt"x =  "Exit"x ]]; then
-                        echo "Bye."
+                        echo "*** Bye."
                         exit 0
                 else
                         break;
