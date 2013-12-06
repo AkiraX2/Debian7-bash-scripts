@@ -88,7 +88,7 @@ f_nginx(){
                         f_nginx_install
                 fi
                 select opt in $COMMANDS; do
-                        if [[ "$opt"="ReStart" ]]; then
+                        if [[ "$opt"x =  "ReStart"x ]]; then
                                 service nginx status
                                 f_continue "Are you sure you want to restart Nginx now?"
                                 if [[ $? -eq 0 ]]; then
@@ -98,7 +98,7 @@ f_nginx(){
                                 service nginx restart
                                 echo "Nginx has been restarted."
                                 break
-                        elif [[ "$opt"="Config" ]]; then
+                        elif [[ "$opt"x =  "Config"x ]]; then
                                 f_continue "Are you sure you want to config Nginx now?"
                                 if [[ $?="0" ]]; then
                                         break
@@ -112,9 +112,9 @@ f_nginx(){
                                 service nginx restart
                                 echo "Nginx has been restarted."
                                 break
-                        elif [[ "$opt"="Status" ]]; then
+                        elif [[ "$opt"x =  "Status"x ]]; then
                                 service nginx status
-                        elif [[ "$opt"="Return" ]]; then
+                        elif [[ "$opt"x =  "Return"x ]]; then
                                 return 0
                         else
                                 echo "Please input number. Retry:"
@@ -150,7 +150,7 @@ f_php(){
 
                 fi
                 select opt in $COMMANDS; do
-                        if [[ "$opt"="ReStart" ]]; then
+                        if [[ "$opt"x =  "ReStart"x ]]; then
                                 service php5-fpm status
                                 f_continue "Are you sure you want to restart php5-fpm now?"
                                 if [[ $?="0" ]]; then
@@ -160,16 +160,16 @@ f_php(){
                                 service php5-fpm restart
                                 echo "PHP has been restarted."
                                 break
-                        elif [[ "$opt"="Config" ]]; then
+                        elif [[ "$opt"x =  "Config"x ]]; then
                                 f_continue "Are you sure you want to config PHP now?"
                                 if [[ $?="0" ]]; then
                                         break
                                 fi
                                 f_php_config
                                 break
-                        elif [[ "$opt"="Status" ]]; then
+                        elif [[ "$opt"x =  "Status"x ]]; then
                                 service php5-fpm status
-                        elif [[ "$opt"="Return" ]]; then
+                        elif [[ "$opt"x =  "Return"x ]]; then
                                 return 0
                         else
                              echo "Please input number. Retry:"
@@ -199,7 +199,7 @@ f_mariaDB(){
 
                 fi
                 select opt in $COMMANDS; do
-                        if [[ "$opt"="ReStart" ]]; then
+                        if [[ "$opt"x =  "ReStart"x ]]; then
                                 service mysql status
                                 f_continue "Are you sure you want to restart MariaDB now?"
                                 if [[ $?="0" ]]; then
@@ -209,7 +209,7 @@ f_mariaDB(){
                                 service mysql restart
                                 echo "MariaDB has been restarted."
                                 break
-                        elif [[ "$opt"="Config" ]]; then
+                        elif [[ "$opt"x =  "Config"x ]]; then
                                 f_continue "Are you sure you want to config MariaDB now?"
                                 if [[ $?="0" ]]; then
                                         break
@@ -224,9 +224,9 @@ f_mariaDB(){
                                 service mysql restart
                                 echo "MariaDB has been restarted."
                                 break
-                        elif [[ "$opt"="Status" ]]; then
+                        elif [[ "$opt"x =  "Status"x ]]; then
                                 service mysql status
-                        elif [[ "$opt"="Return" ]]; then
+                        elif [[ "$opt"x =  "Return"x ]]; then
                                 return 0
                         else
                                 echo "Please input number. Retry:"
@@ -245,16 +245,16 @@ if [[ $? -eq 0 ]]; then
 fi
 while :; do        
         select opt in $OPTIONS; do
-                if [[ "$opt"="Nginx" ]]; then
+                if [[ "$opt"x = "Nginx"x ]]; then
                         f_nginx
                         break 
-                elif [[ "$opt"="Php" ]]; then
+                elif [[ "$opt"x = "Php"x ]]; then
                         f_php
                         break
-                elif [[ "$opt"="MariaDB" ]]; then
+                elif [[ "$opt"x =  "MariaDB"x ]]; then
                         f_mariaDB
                         break
-                elif [[ "$opt"="Exit" ]]; then
+                elif [[ "$opt"x =  "Exit"x ]]; then
                         echo "Bye."
                         exit 0
                 else
